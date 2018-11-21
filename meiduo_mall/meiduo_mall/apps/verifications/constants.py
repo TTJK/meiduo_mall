@@ -1,0 +1,10 @@
+
+
+# 短信验证码有效时间
+SMS_CODE_REDIS_EXPIRES = 300
+
+# 重复发送间隔时间
+SEND_SMS_CODE_INTERVAL = 60
+
+#发短信模式选择
+SMS_CODE_TEMPLATE_ID = 1
