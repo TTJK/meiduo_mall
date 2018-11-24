@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 # Create your views here.
-from meiduo_mall.meiduo_mall.libs.yuntongxun.sms import CCP
-from meiduo_mall.meiduo_mall.utils.exceptions import logger
+from meiduo_mall.libs.yuntongxun.sms import CCP
+from meiduo_mall.utils.exceptions import logger
 from . import constants
 
 class SMSCodeView(APIView):
