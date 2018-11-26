@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import datetime
 import os
 import sys
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
      #注册DRF框架
     'users.apps.UsersConfig',
     'corsheaders',
+    'oauth.apps.OauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -208,6 +209,12 @@ LOGGING = {
 REST_FRAMEWORK = {
     # 异常处理
     'EXCEPTION_HANDLER': 'meiduo_mall.utils.exceptions.exception_handler',
+    # 默认认证的类
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 放在首位表示默认用JWT的方法进行认证
+        'rest_framework.authentication.SessionAuthentication',  # session认证机制
+        'rest_framework.authentication.BasicAuthentication',  # 基础的认证机制
+    ),
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -215,3 +222,14 @@ AUTH_USER_MODEL = 'users.User'
 
 CORS_ORIGIN_WHITELIST = ('127.0.0.1:8080', 'localhost:8080','www.meiduo.site:8080', 'api.meiduo.site:8000')
 CORS_ALLOW_CREDENTIALS = True
+JWT_AUTH = {
+    # 有效期时间为一天,尽量不要太长
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
+
+}
+
+
+AUTHENTICATION_BACKENDS = [
+'users.utils.UsernameMobileAuthBackend', ]

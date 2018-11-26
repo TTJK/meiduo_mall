@@ -16,7 +16,6 @@ class SMSCodeView(APIView):
         redis_conn = get_redis_connection('verify_codes')
         send_flag = redis_conn.get('send_flag_%s' % mobile)
         if send_flag:
-            print("SSSSSSS")
             return Response({"message":"频繁发送短信"},status=status.HTTP_400_BAD_REQUEST)
         sms_code = "%06d" % random.randint(0,999999)
         logger.info(sms_code)
