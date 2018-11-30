@@ -3,6 +3,7 @@ from rest_framework_jwt.settings import api_settings
 from django_redis import get_redis_connection
 from rest_framework import serializers
 from .models import User
+from celery_tasks.email.tasks import send_verify_email
 
 class CreateUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(label='确认密码',write_only=True)
@@ -72,3 +73,34 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.token = token
 
         return user
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','username','mobile','email','email_active']
+
+class EmailSerializer(serializers.ModelSerializer):
+    """保存邮箱的序列化器"""
+    class Meta:
+        model = User
+        fields = ['id', 'email']
+        extra_kwargs = {
+            'email': {
+                'required': True
+            }
+        }
+
+    def update(self, instance, validated_data):
+
+        """重写此方法有两个目的: 1.只保存邮箱, 2.发激活邮件"""
+        instance.email = validated_data.get('email')
+        instance.save()  # ORM中 的保存
+        # super(EmailSerializer, self).update(instance, validated_data)
+        # 1.1 生成邮箱的激活链接
+        verify_url = instance.generate_verify_email_url()
+        # 2.发激活邮件
+        # 传入收件人及激活链接
+        send_verify_email.delay(instance.email, verify_url)
+
+        return instance

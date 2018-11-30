@@ -233,3 +233,25 @@ JWT_AUTH = {
 
 AUTHENTICATION_BACKENDS = [
 'users.utils.UsernameMobileAuthBackend', ]
+
+QQ_CLIENT_ID = '101514053'
+QQ_CLIENT_SECRET = '1075e75648566262ea35afa688073012'
+QQ_REDIRECT_URI = 'http://www.meiduo.site:8080/oauth_callback.html'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+#发送邮件的邮箱
+EMAIL_HOST_USER = 'cocoachina163@163.com'
+#在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = 'tukai1314520mx'
+#收件人看到的发件人
+EMAIL_FROM = 'python<cocoachina163@163.com>'
+
+REST_FRAMEWORK_EXTENSIONS = {
+    # 缓存时间(单秒)
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 60,
+    # 缓存存储
+    'DEFAULT_USE_CACHE': 'default',
+}
