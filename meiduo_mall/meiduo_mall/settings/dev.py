@@ -42,6 +42,7 @@ INSTALLED_APPS = [
      #注册DRF框架
     'users.apps.UsersConfig',
     'corsheaders',
+    'areas.apps.AreasConfig',
     'oauth.apps.OauthConfig',
 ]
 
